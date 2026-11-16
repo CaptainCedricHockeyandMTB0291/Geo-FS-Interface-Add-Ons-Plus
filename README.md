@@ -1,284 +1,263 @@
 # ✈️ Geo-FS-Interface-Add-Ons-Plus
 
-### A customizable interface and add-on collection for GeoFS 4.0 Beta
+### A customizable interface and reference-tool collection for GeoFS
 
-Welcome to **Geo-FS-Interface-Plus**!
+Geo-FS-Interface-Add-Ons-Plus is a collection of independent JavaScript add-ons for GeoFS. The tools focus on interface customization, personal reference information, phraseology practice, keyboard documentation, and saved appearance profiles.
 
-This repository is a collection of original JavaScript tools designed to improve the GeoFS experience through customizable interfaces, useful reference utilities and additional virtual aviation features.
+The repository contains five add-ons. Each has a desktop Tampermonkey userscript and an iPad Safari bookmarklet loader.
 
-The main idea behind this project is simple: give users more control over how their GeoFS experience looks and feels, while providing several independent tools that can be installed and used separately.
-
-The collection is designed with both desktop browsers and iPad Safari in mind.
-
-Each add-on is intended to have two versions:
-
-- **Tampermonkey userscript** – for desktop browsers such as Microsoft Edge and Google Chrome.
-- **Safari bookmarklet** – for iPad and other compatible browsers that support bookmarklets.
+> **Project status:** The files are published, but compatibility can vary by browser and GeoFS version. Please test each add-on in your own setup before relying on it.
 
 ---
 
-## 🧰 The Add-on Collection
-
-The project will contain five main tools.
+## 🧰 The five add-ons
 
 ### 1. GeoFS UI Enhancer
 
-A customizable interface enhancement system designed to give the add-on interfaces a more modern appearance.
+Customizes the appearance of this project's add-on panels.
 
-Planned features:
-
-- Light, Dark and System themes.
-- Custom accent colours.
-- Adjustable text sizes.
-- Compact, Comfortable and Spacious layouts.
-- Adjustable panel transparency.
-- Customizable panel appearance.
-- Movable interface panels.
-- Adjustable panel sizing.
-- Saved appearance preferences.
+- Light, Dark, and System themes.
+- Custom accent colour.
+- Small, Medium, and Large text settings.
+- Compact, Comfortable, and Spacious density setting.
+- Panel transparency and corner roundness.
+- Movable settings panel.
+- Local preference storage.
 - Reset-to-default settings.
 
-The visual design will take inspiration from modern applications such as ChatGPT, with a clean layout and straightforward customization controls.
+**Scope:** These settings style compatible add-on panels. They do not replace or reskin the built-in GeoFS interface. Panel resizing is not currently included.
 
-**The theme settings will apply to this project's add-on interfaces, not automatically replace the entire built-in GeoFS interface.**
+Files:
+- [Desktop userscript](UIEnhancer.User.js)
+- [Safari bookmarklet loader](UIEnhancerbookmarklet.txt)
 
 ### 2. GeoFS Aircraft Reference Cards
 
-A small aircraft reference library designed to keep useful virtual aviation information in one place.
+A searchable, editable personal library for aircraft information.
 
-Planned features:
-
-- Aircraft reference cards.
-- Searchable aircraft library.
-- Aircraft descriptions.
-- Personal notes.
-- Editable reference information.
+- Searchable aircraft cards.
+- Built-in starter reference entries.
 - Custom aircraft entries.
-- Simple information panels.
+- Editable titles and reference details.
+- Personal notes.
+- Local browser storage.
+- Appearance settings compatible with the shared theme preference key.
 
-Users will be able to maintain their own reference information without requiring an external account.
+Files:
+- [Desktop userscript](aircraftreference.user.js)
+- [Safari bookmarklet loader](aircraftreferencebookmarklet.txt)
+
+Aircraft information is supplied for simulator reference and personal learning. Check authoritative sources for real-world aviation information.
 
 ### 3. GeoFS ATC Phraseology Assistant
 
-A virtual air traffic control phraseology reference and practice tool.
+An educational phraseology reference and fictional practice panel.
 
-Planned features:
+- Searchable example phrase library.
+- Phrase categories.
+- Fictional practice scenarios.
+- Pilot and controller example views.
+- Editable practice callsign and fictional station name.
+- Save and delete personal practice notes.
+- Local browser storage.
+- Shared theme colour and appearance preferences.
 
-- Example ATC communication phrases.
-- Selectable communication categories.
-- Editable callsign information.
-- Pilot and controller phrase examples.
-- Searchable phrase library.
-- Custom practice entries.
-- Compact communication reference panel.
+Files:
+- [Desktop userscript](atcphraseology.user.js)
+- [Safari bookmarklet loader](atcphraseologybookmarklet.txt)
 
-This is an educational and simulation companion. It does not connect to real air traffic control services or provide real-world flight clearances.
+**Educational use only:** This tool does not connect to live air traffic control, issue clearances, or provide operational flight instructions. Its simplified examples are not a substitute for official aviation training or current publications.
 
 ### 4. GeoFS Keyboard Reference
 
-A searchable keyboard shortcut reference for convenient access to useful simulator controls.
+A searchable and editable personal keyboard shortcut notebook.
 
-Planned features:
+- Search shortcut titles, key combinations, categories, and notes.
+- Filter entries by category.
+- Add, edit, and delete custom entries.
+- Save entries locally in the browser.
+- Uses the shared theme preferences for compatible appearance settings.
 
-- Searchable shortcut list.
-- Categorized keyboard references.
-- Custom shortcut notes.
-- Editable entries.
-- Compact reference panel.
-- Desktop-friendly layout.
-- Touch-friendly iPad layout.
+Files:
+- [Desktop userscript](keyboardreference.user.js)
+- [Safari bookmarklet loader](keyboardreferencebookmarklet.txt)
 
-The tool is intended to display reference information rather than automatically change simulator controls.
+The starter entries are placeholders. Confirm key assignments in your current GeoFS version before adding them as verified shortcuts. This tool does not intercept, remap, or change simulator controls.
 
 ### 5. GeoFS Interface Profiles
 
-A preference management tool for saving and switching between interface layouts.
+A local profile manager for compatible add-on appearance settings.
 
-Planned features:
+- Save multiple named profiles.
+- Apply a saved profile.
+- Rename, update, and delete profiles.
+- Includes starter layout profiles.
+- Reset appearance settings.
+- Stores profile data in local browser storage.
+- Uses the same shared theme preference key as the UI Enhancer.
 
-- Save custom interface profiles.
-- Create multiple named profiles.
-- Switch between saved profiles.
-- Rename profiles.
-- Delete profiles.
-- Restore default preferences.
-- Store preferences locally.
+Files:
+- [Desktop userscript](interfaceprofiles.user.js)
+- [Safari bookmarklet loader](interfaceprofilesbookmarklet.txt)
 
-Example profiles could include:
-
-| Profile | Intended layout |
-|---|---|
-| Compact | Smaller panels and reduced spacing |
-| Standard | Balanced everyday interface |
-| Spacious | Larger panels and more comfortable spacing |
-| Custom | User-defined appearance |
+Profiles manage appearance preferences used by compatible add-on panels. They do not save aircraft state, simulator controls, or GeoFS account settings.
 
 ---
 
-## 💻 Supported Platforms
+## 📁 Repository layout
 
-| Platform | Intended version |
-|---|---|
-| Windows desktop | Tampermonkey |
-| Microsoft Edge | Tampermonkey |
-| Google Chrome | Tampermonkey |
-| macOS | Compatible userscript manager |
-| iPad Safari | Bookmarklet |
-| Other browsers | Compatibility may vary |
+All files are currently stored in the repository root:
 
-Compatibility depends on browser security restrictions and changes to GeoFS.
-
----
-
-## 📦 Project Structure
-
-The planned repository structure is:
-
-```text
-Geo-FS-Interface-Plus/
-│
+~~~text
+Geo-FS-Interface-Add-Ons-Plus/
 ├── README.md
 ├── LICENSE
-├── CHANGELOG.md
-│
-├── UI-Enhancer/
-│   ├── ui-enhancer.user.js
-│   └── ui-enhancer-bookmarklet.txt
-│
-├── Aircraft-Reference-Cards/
-│   ├── aircraft-reference.user.js
-│   └── aircraft-reference-bookmarklet.txt
-│
-├── ATC-Phraseology-Assistant/
-│   ├── atc-assistant.user.js
-│   └── atc-assistant-bookmarklet.txt
-│
-├── Keyboard-Reference/
-│   ├── keyboard-reference.user.js
-│   └── keyboard-reference-bookmarklet.txt
-│
-└── Interface-Profiles/
-    ├── interface-profiles.user.js
-    └── interface-profiles-bookmarklet.txt
-```
+├── UIEnhancer.User.js
+├── UIEnhancerbookmarklet.txt
+├── aircraftreference.user.js
+├── aircraftreferencebookmarklet.txt
+├── atcphraseology.user.js
+├── atcphraseologybookmarklet.txt
+├── interfaceprofiles.user.js
+├── interfaceprofilesbookmarklet.txt
+├── keyboardreference.user.js
+└── keyboardreferencebookmarklet.txt
+~~~
 
-Each folder will contain its own desktop userscript and Safari bookmarklet version.
+The names and capitalization above match the files in the main branch.
 
 ---
 
-## 📱 Installation
+## 💻 Desktop installation — Tampermonkey
 
-### Desktop — Tampermonkey
+1. Install Tampermonkey in a supported desktop browser.
+2. Open the userscript file for the add-on you want.
+3. Open its Raw view on GitHub.
+4. Use Tampermonkey's installation page to review and install the script.
+5. Open or refresh GeoFS.
+6. Look for the add-on's launcher button.
 
-1. Install Tampermonkey in your supported desktop browser.
-2. Open the add-on's `.user.js` file from this repository.
-3. Open the file using Tampermonkey's installation interface.
-4. Review the script and install it.
-5. Open GeoFS.
-6. Open the add-on's interface if it does not appear automatically.
+Install only the add-ons you want. They are designed to be independent.
 
-Repeat these steps for any other add-ons you want to install.
+### Direct userscript links
 
-### iPad — Safari Bookmarklet
+| Add-on | Userscript |
+|---|---|
+| UI Enhancer | [UIEnhancer.User.js](https://raw.githubusercontent.com/CaptainCedricHockeyandMTB0291/Geo-FS-Interface-Add-Ons-Plus/main/UIEnhancer.User.js) |
+| Aircraft Reference Cards | [aircraftreference.user.js](https://raw.githubusercontent.com/CaptainCedricHockeyandMTB0291/Geo-FS-Interface-Add-Ons-Plus/main/aircraftreference.user.js) |
+| ATC Phraseology Assistant | [atcphraseology.user.js](https://raw.githubusercontent.com/CaptainCedricHockeyandMTB0291/Geo-FS-Interface-Add-Ons-Plus/main/atcphraseology.user.js) |
+| Interface Profiles | [interfaceprofiles.user.js](https://raw.githubusercontent.com/CaptainCedricHockeyandMTB0291/Geo-FS-Interface-Add-Ons-Plus/main/interfaceprofiles.user.js) |
+| Keyboard Reference | [keyboardreference.user.js](https://raw.githubusercontent.com/CaptainCedricHockeyandMTB0291/Geo-FS-Interface-Add-Ons-Plus/main/keyboardreference.user.js) |
 
-1. Open Safari.
-2. Create a bookmark for any webpage.
-3. Edit the bookmark.
-4. Rename it to the corresponding add-on name.
-5. Replace its URL with the complete bookmarklet code.
+---
+
+## 📱 iPad installation — Safari bookmarklets
+
+Each bookmarklet file in this repository is a small loader. When activated on a GeoFS page, it requests the matching JavaScript userscript from this repository's Raw GitHub address.
+
+For each add-on:
+
+1. Open Safari and create a bookmark for any page.
+2. Edit that bookmark and give it the add-on's name.
+3. Open the matching bookmarklet TXT file from this repository.
+4. Copy the entire line beginning with the text javascript:.
+5. Paste that line into the bookmark's URL field, replacing the existing address.
 6. Save the bookmark.
-7. Open GeoFS.
-8. Activate the bookmarklet.
+7. Open GeoFS and activate the bookmark.
 
-**Important:** Bookmarklets may be affected by Safari security restrictions. Some implementations may require an internet connection to load the corresponding script from GitHub.
+### Bookmarklet source files
 
----
+| Add-on | Bookmarklet file |
+|---|---|
+| UI Enhancer | [UIEnhancerbookmarklet.txt](UIEnhancerbookmarklet.txt) |
+| Aircraft Reference Cards | [aircraftreferencebookmarklet.txt](aircraftreferencebookmarklet.txt) |
+| ATC Phraseology Assistant | [atcphraseologybookmarklet.txt](atcphraseologybookmarklet.txt) |
+| Interface Profiles | [interfaceprofilesbookmarklet.txt](interfaceprofilesbookmarklet.txt) |
+| Keyboard Reference | [keyboardreferencebookmarklet.txt](keyboardreferencebookmarklet.txt) |
 
-## 🎨 Shared Customization System
+**Bookmarklet requirements and limitations**
 
-One of the main design goals is to make the five add-ons feel like parts of the same application.
-
-The shared customization system is intended to provide:
-
-- Consistent visual styling.
-- Shared colour preferences.
-- Matching typography.
-- Consistent panel layouts.
-- Locally saved appearance settings.
-- Independent add-on installation.
-
-The goal is to make the tools look and feel connected without forcing users to install every add-on.
+- An internet connection is required because the loader fetches the main script from GitHub.
+- The bookmarklet must be activated on a GeoFS page.
+- Safari or the page's Content Security Policy may block script injection. If that happens, use the desktop userscript version on a supported desktop browser.
+- If a bookmarklet does not appear to work after an update, refresh GeoFS and activate it again.
+- Keep the complete javascript: prefix when saving the bookmark. Some browsers may remove it when editing a bookmark, so check the saved URL.
 
 ---
 
-## ⚙️ How the Add-ons Work
+## 🎨 Shared appearance preferences
 
-The project uses JavaScript to create additional browser-based interfaces.
+The add-ons use a shared localStorage preference key:
 
-The desktop versions use userscript metadata to identify supported GeoFS webpages and run the add-on code when the page loads.
+**geofsInterfacePlusTheme**
 
-The iPad versions use bookmarklets. A bookmarklet is a JavaScript command saved as a browser bookmark. When activated, it can load or initialize the corresponding add-on.
+The UI Enhancer is the main settings panel for this preference object. Other add-ons read compatible settings from the same key when they render.
 
-Depending on the browser and page security policies, bookmarklet versions may need to load their main JavaScript file from this GitHub repository.
+Supported appearance values include:
+- Theme: dark, light, or system.
+- Accent colour.
+- Text size.
+- Transparency.
+- Corner roundness.
+- Density where the individual add-on implements it.
 
-The add-ons are intended to use their own interface components and documented browser capabilities. They do not require undocumented GeoFS APIs or access to private simulator data.
-
----
-
-## 🔒 Privacy and Security
-
-This project aims to keep its tools simple and transparent.
-
-- No account is required.
-- No passwords are collected.
-- No hidden analytics are intended.
-- Local preferences are stored in the browser.
-- Custom reference entries remain locally stored unless a particular export feature is added.
-- No unnecessary external libraries are intended.
-
-Always inspect scripts before installing or running them.
+Not every setting affects every panel identically. The add-ons remain independently installable, and the shared preferences are stored by the browser for the current site origin.
 
 ---
 
-## ⚠️ Important Notice
+## ⚙️ How the add-ons work
 
-Geo-FS-Interface-Plus is an independent community project.
+- **Userscripts** include Tampermonkey metadata that tells a userscript manager which GeoFS pages they are intended to run on.
+- **Bookmarklets** are saved browser bookmarks containing JavaScript. In this project, each bookmarklet loads its matching userscript from the repository's Raw GitHub address.
+- **Panels** are created by the scripts in the page. Most use Shadow DOM to isolate their interface styling from the surrounding page.
+- **Local storage** keeps settings, cards, notes, profiles, and custom keyboard entries in the browser.
 
-It is not affiliated with, sponsored by, or officially supported by GeoFS.
-
-All tools are intended for browser customization and virtual flight simulation.
-
-Aircraft reference information and ATC examples are educational and are not intended for real-world aviation operations, navigation or flight planning.
-
-Browser updates and GeoFS changes may affect compatibility.
-
-Use at your own discretion.
+The bookmarklet loaders depend on the exact repository paths and filenames shown above. If a file is renamed or moved, its loader URL must be updated too.
 
 ---
 
-## 🛠️ Development Principles
+## 🔒 Privacy and security
 
-This project follows a few basic principles:
+The add-ons are designed to work locally in the browser.
 
-1. Original code rather than copied add-ons.
-2. Separate desktop and iPad implementations.
-3. Clear documentation.
-4. Simple installation.
-5. Touch-friendly controls.
-6. Customizable interfaces.
-7. Local-first data storage where practical.
-8. Independent tools that do not require the entire collection.
+- No project account is required.
+- The scripts do not ask for passwords.
+- Personal entries and settings are stored in the browser's local storage.
+- The bookmarklet loaders download the corresponding script from GitHub.
+- Review the source code before installing or running it.
+- Clearing browser site data may remove saved preferences, notes, cards, and profiles.
+- Local data does not automatically synchronize between devices.
 
-The project is also intended to remain separate from other GeoFS repositories maintained by the same developer, with distinct features and purposes.
+---
+
+## ⚠️ Compatibility and disclaimer
+
+Geo-FS-Interface-Add-Ons-Plus is an independent community project. It is not affiliated with, sponsored by, or officially supported by GeoFS.
+
+The scripts target the GeoFS website domains listed in their userscript metadata. Browser updates, GeoFS changes, Safari restrictions, and content security policies may affect compatibility.
+
+Aircraft cards, keyboard entries, and phraseology examples are for simulator reference and learning. They are not intended for real-world flight operations, navigation, or flight planning.
+
+Use at your own discretion. Test each add-on in the simulator before relying on it.
+
+---
+
+## 🛠️ Development principles
+
+1. Keep each add-on independent.
+2. Use original code and document its purpose.
+3. Provide desktop and iPad-oriented installation paths.
+4. Keep personal data local where practical.
+5. Avoid claiming a feature is tested unless it has actually been tested.
+6. Keep bookmarklet URLs synchronized with the repository's actual file paths.
+7. Document limitations clearly.
 
 ---
 
 ## 📜 License
 
-This project is released under the **MIT License**.
-
-See the `LICENSE` file for details.
+This project is released under the MIT License. See the [LICENSE](LICENSE) file for the full terms.
 
 ---
 
-**Geo-FS-Interface-Plus — Customize your interface. Expand your simulator toolkit.**
+**Geo-FS-Interface-Add-Ons-Plus — Customize your interface. Organize your simulator toolkit.**
