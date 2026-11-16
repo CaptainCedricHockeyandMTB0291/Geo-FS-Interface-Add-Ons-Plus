@@ -12,7 +12,7 @@ The repository contains five add-ons. Each has a desktop Tampermonkey userscript
 Five add ons can run together without conflicts or rendering GeoFS, if rendering happens and cotinues, check out my renderer fixer page below.
 https://github.com/CaptainCedricHockeyandMTB0291/Geo-FS-Renderer-Fixer
 
-Without furder ado, please continue reading the read me and enjoy the code.
+Without furder ado, please continue reading the readme and enjoy the code.
 
 ## 🧰 The five add-ons
 
