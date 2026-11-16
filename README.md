@@ -6,10 +6,10 @@ Geo-FS-Interface-Add-Ons-Plus is a collection of independent JavaScript add-ons 
 
 The repository contains five add-ons. Each has a desktop Tampermonkey userscript and an iPad Safari bookmarklet loader.
 
-> **Project status:** The files are published, but compatibility can vary by browser and GeoFS version. Add ons were tested in lab, but before relying on the codes, please test for yourselves. Smoe codes may not work due to device compatibility. Codes should work on most devices.
+> **Project status:** The files are published, but compatibility can vary by browser and GeoFS version. Add ons were tested in lab, but before relying on the codes, please test for yourselves. Some codes may not work due to device compatibility. Codes should work on most devices.
 
 ---
-Five add ons can run together without conflicts or rendering GeoFS, if rendering happens and cotinues, check out my renderer fixer page below.
+Five add ons can run together without conflicts or rendering GeoFS, if rendering happens and continues, check out my renderer fixer page below.
 https://github.com/CaptainCedricHockeyandMTB0291/Geo-FS-Renderer-Fixer
 
 Without furder ado, please continue reading the readme and enjoy the code.
