@@ -1,9 +1,9 @@
 
 // ==UserScript==
-// @name         GeoFS ATC Phraseology Assistant
+// @name         GeoFS Keyboard Reference
 // @namespace    https://github.com/CaptainCedricHockeyandMTB0291/Geo-FS-Interface-Add-Ons-Plus
 // @version      1.0.0
-// @description  Educational ATC phraseology reference and fictional practice panel for GeoFS.
+// @description  Searchable and editable personal keyboard shortcut reference for GeoFS.
 // @author       GeoFS Interface Plus contributors
 // @match        https://www.geo-fs.com/*
 // @match        https://geo-fs.com/*
@@ -15,137 +15,81 @@
 (() => {
     "use strict";
 
-    const ROOT_ID = "geofs-atc-phraseology-root";
-    const NOTES_KEY = "geofsInterfacePlusATCNotes";
+    const ROOT_ID = "geofs-keyboard-reference-root";
+    const STORAGE_KEY = "geofsInterfacePlusKeyboardEntries";
     const THEME_KEY = "geofsInterfacePlusTheme";
 
     if (document.getElementById(ROOT_ID)) return;
 
-    const phrases = [
+    const starterEntries = [
         {
-            category: "General communication",
-            title: "Initial contact",
-            phrase: "[Station name], [callsign], hello.",
-            explanation: "A simple example of opening a fictional practice exchange."
+            id: "starter-aircraft",
+            title: "Aircraft controls",
+            shortcut: "Check GeoFS controls",
+            category: "Aircraft",
+            notes: "Use the controls or help information in your current GeoFS version to confirm the assigned keys."
         },
         {
-            category: "General communication",
-            title: "Requesting information",
-            phrase: "[Calls sign], request information about the practice scenario.",
-            explanation: "Use a clear, concise request when asking for information in a practice session."
+            id: "starter-camera",
+            title: "Camera controls",
+            shortcut: "Check GeoFS controls",
+            category: "Camera",
+            notes: "Record the camera shortcuts available in your simulator version."
         },
         {
-            category: "General communication",
-            title: "Confirming a message",
-            phrase: "[Station name], [callsign], message understood.",
-            explanation: "A simple acknowledgement for a non-operational practice exchange."
+            id: "starter-view",
+            title: "View and display",
+            shortcut: "Check GeoFS controls",
+            category: "Interface",
+            notes: "Add your preferred display and view shortcuts here."
         },
         {
-            category: "General communication",
-            title: "Asking for repetition",
-            phrase: "[Station name], [callsign], say again, please.",
-            explanation: "A polite way to ask for a message to be repeated."
-        },
-        {
-            category: "General communication",
-            title: "Asking for clarification",
-            phrase: "[Station name], [callsign], please clarify.",
-            explanation: "Use when a practice message is unclear."
-        },
-        {
-            category: "General communication",
-            title: "Ending a practice exchange",
-            phrase: "[Station name], [callsign], ending this practice exchange.",
-            explanation: "A clear way to close a fictional learning session."
-        },
-        {
-            category: "Readback and confirmation",
-            title: "Practice readback",
-            phrase: "[Calls sign], reading back the practice message: [repeat the sample message].",
-            explanation: "Practise repeating information accurately. This is a learning exercise, not an operational readback."
-        },
-        {
-            category: "Readback and confirmation",
-            title: "Requesting a correction",
-            phrase: "[Station name], [callsign], I may have misunderstood. Please repeat the practice message.",
-            explanation: "Practise asking for clarification instead of guessing."
-        },
-        {
-            category: "Position and status reports",
-            title: "Position report",
-            phrase: "[Station name], [callsign], simulated position report: [fictional location].",
-            explanation: "A fictional simulator-only position report. Do not use invented positions as real reports."
-        },
-        {
-            category: "Position and status reports",
-            title: "Status update",
-            phrase: "[Station name], [callsign], status update: [brief simulated status].",
-            explanation: "Practise giving a short, organised status update."
-        },
-        {
-            category: "Learning and corrections",
-            title: "Requesting feedback",
-            phrase: "[Station name], [callsign], please provide feedback on my phraseology.",
-            explanation: "Use this to ask a practice partner to review your wording."
-        },
-        {
-            category: "Learning and corrections",
-            title: "Practice acknowledgement",
-            phrase: "[Calls sign], message received. This is a simulated learning exchange.",
-            explanation: "An example acknowledgement for a fictional training conversation."
+            id: "starter-general",
+            title: "General simulator controls",
+            shortcut: "Check GeoFS controls",
+            category: "General",
+            notes: "Add verified general simulator shortcuts here."
         }
     ];
 
-    const scenarios = {
-        introduction: {
-            title: "First contact",
-            prompt: "You are beginning a fictional practice session at Example Field. Introduce your aircraft using your chosen callsign.",
-            pilot: "[Station name], [callsign], hello. Ready for phraseology practice.",
-            controller: "[Calls sign], hello. Example Field practice desk here. This is a fictional learning exchange."
-        },
-        repetition: {
-            title: "Requesting repetition",
-            prompt: "Your fictional practice partner has sent a message you did not understand. Write a polite request for repetition.",
-            pilot: "[Station name], [callsign], say again, please.",
-            controller: "[Calls sign], understood. I will repeat the fictional practice message."
-        },
-        clarification: {
-            title: "Clarification",
-            prompt: "A practice message is unclear. Write a short request asking your partner to clarify it.",
-            pilot: "[Station name], [callsign], please clarify.",
-            controller: "[Calls sign], understood. Please tell me which part of the practice message needs clarification."
-        },
-        readback: {
-            title: "Practice readback",
-            prompt: "Your practice partner has sent a short fictional message. Practise repeating it accurately in your own words.",
-            pilot: "[Station name], [callsign], reading back the practice message: [repeat the sample message].",
-            controller: "[Calls sign], your practice readback has been received. Compare it with the original sample."
-        },
-        position: {
-            title: "Simulated position report",
-            prompt: "Give a fictional position report using an invented location. Make clear that it is a simulator exercise.",
-            pilot: "[Station name], [callsign], simulated position report: near Example Point.",
-            controller: "[Calls sign], simulated position report received. Thank you."
-        },
-        feedback: {
-            title: "Request feedback",
-            prompt: "Ask your practice partner to review your phraseology and suggest improvements.",
-            pilot: "[Station name], [callsign], please provide feedback on my phraseology.",
-            controller: "[Calls sign], understood. I can provide feedback on clarity and structure."
-        }
-    };
-
-    function loadNotes() {
+    function loadEntries() {
         try {
-            const value = JSON.parse(localStorage.getItem(NOTES_KEY) || "[]");
-            return Array.isArray(value) ? value.filter(item => typeof item === "string") : [];
-        } catch {
+            const stored = localStorage.getItem(STORAGE_KEY);
+
+            if (stored === null) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(starterEntries));
+                return starterEntries.map(entry => ({ ...entry }));
+            }
+
+            const parsed = JSON.parse(stored);
+
+            if (!Array.isArray(parsed)) return [];
+
+            return parsed.filter(entry =>
+                entry &&
+                typeof entry.id === "string" &&
+                typeof entry.title === "string"
+            );
+        } catch (error) {
+            console.warn("[Keyboard Reference] Could not load entries:", error);
             return [];
         }
     }
 
-    let notes = loadNotes();
-    let activeScenario = "introduction";
+    let entries = loadEntries();
+    let editingId = null;
+    let activeCategory = "All";
+
+    function saveEntries() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+            return true;
+        } catch (error) {
+            console.warn("[Keyboard Reference] Could not save entries:", error);
+            alert("Could not save your shortcut entries. Check browser storage.");
+            return false;
+        }
+    }
 
     const host = document.createElement("div");
     host.id = ROOT_ID;
@@ -159,7 +103,7 @@
                 all: initial;
                 position: fixed;
                 inset: 0;
-                z-index: 2147482998;
+                z-index: 2147482997;
                 pointer-events: none;
                 font-family: Arial, Helvetica, sans-serif;
             }
@@ -170,7 +114,7 @@
 
             .launcher {
                 position: fixed;
-                left: 76px;
+                left: 134px;
                 bottom: 18px;
                 width: 49px;
                 height: 49px;
@@ -178,7 +122,7 @@
                 border-radius: 50%;
                 background: var(--accent);
                 color: white;
-                font-size: 19px;
+                font-size: 20px;
                 cursor: pointer;
                 pointer-events: auto;
                 box-shadow: 0 4px 18px #0005;
@@ -188,8 +132,8 @@
                 display: none;
                 position: fixed;
                 top: 65px;
-                left: 76px;
-                width: min(450px, calc(100vw - 36px));
+                left: 134px;
+                width: min(440px, calc(100vw - 36px));
                 max-height: calc(100vh - 100px);
                 overflow: hidden;
                 flex-direction: column;
@@ -229,40 +173,16 @@
                 cursor: pointer;
             }
 
-            .tabs {
+            .toolbar {
                 display: flex;
-                gap: 6px;
-                padding: 10px 12px;
+                gap: 8px;
+                padding: 12px;
                 border-bottom: 1px solid var(--border);
             }
 
-            .tab {
+            .search {
+                min-width: 0;
                 flex: 1;
-                padding: 9px 5px;
-                border: 1px solid var(--border);
-                border-radius: 8px;
-                background: var(--control);
-                color: var(--text);
-                cursor: pointer;
-                font-size: 12px;
-            }
-
-            .tab.active {
-                border-color: var(--accent);
-                background: var(--accent);
-                color: white;
-            }
-
-            .view {
-                display: none;
-                overflow-y: auto;
-                padding: 13px;
-            }
-
-            .view.active { display: block; }
-
-            .search, .field input, .field select, .field textarea {
-                width: 100%;
                 padding: 10px;
                 border: 1px solid var(--border);
                 border-radius: 9px;
@@ -271,51 +191,134 @@
                 outline-color: var(--accent);
             }
 
-            .search { margin-bottom: 10px; }
+            .primary {
+                border: 0;
+                border-radius: 9px;
+                padding: 9px 12px;
+                background: var(--accent);
+                color: white;
+                font-weight: 700;
+                cursor: pointer;
+            }
 
-            .phrase-card {
-                padding: 11px;
+            .filters {
+                display: flex;
+                gap: 6px;
+                padding: 10px 12px;
+                overflow-x: auto;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .filter {
+                flex: 0 0 auto;
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                padding: 6px 10px;
+                background: var(--control);
+                color: var(--text);
+                font-size: 11px;
+                cursor: pointer;
+            }
+
+            .filter.active {
+                background: var(--accent);
+                color: white;
+                border-color: var(--accent);
+            }
+
+            .entry-list {
+                overflow-y: auto;
+                min-height: 100px;
+                padding: 10px;
+            }
+
+            .entry {
+                padding: 12px;
                 margin-bottom: 9px;
                 border: 1px solid var(--border);
                 border-radius: 10px;
                 background: var(--control);
             }
 
-            .phrase-category {
-                font-size: 10px;
-                color: var(--accent);
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: .4px;
+            .entry-top {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
             }
 
-            .phrase-title {
-                margin-top: 5px;
+            .entry-title {
                 font-size: var(--font-size);
                 font-weight: 700;
-            }
-
-            .phrase-text {
-                margin-top: 8px;
-                font-size: 12px;
-                line-height: 1.5;
                 overflow-wrap: anywhere;
             }
 
-            .explanation {
-                margin-top: 7px;
-                font-size: 11px;
-                line-height: 1.5;
-                opacity: .7;
+            .entry-category {
+                margin-top: 4px;
+                font-size: 10px;
+                opacity: .65;
             }
 
-            .section-title {
-                margin: 3px 0 10px;
+            .shortcut {
+                display: inline-block;
+                margin-top: 10px;
+                padding: 6px 9px;
+                border: 1px solid var(--border);
+                border-radius: 7px;
+                background: var(--panel);
+                font-family: monospace;
+                font-size: 12px;
+                overflow-wrap: anywhere;
+            }
+
+            .entry-notes {
+                margin-top: 9px;
+                font-size: 12px;
+                line-height: 1.5;
+                white-space: pre-wrap;
+                overflow-wrap: anywhere;
+            }
+
+            .entry-actions {
+                display: flex;
+                gap: 5px;
+                flex-shrink: 0;
+            }
+
+            .entry-actions button {
+                border: 1px solid var(--border);
+                border-radius: 7px;
+                padding: 6px 8px;
+                background: transparent;
+                color: var(--text);
+                cursor: pointer;
+            }
+
+            .count, .footer {
+                padding: 9px 12px;
+                font-size: 10px;
+                opacity: .6;
+                text-align: center;
+                border-top: 1px solid var(--border);
+            }
+
+            .editor {
+                display: none;
+                padding: 13px;
+                border-top: 1px solid var(--border);
+                overflow-y: auto;
+                max-height: 48vh;
+            }
+
+            .editor.open { display: block; }
+
+            .editor-title {
+                margin-bottom: 12px;
                 font-size: 14px;
                 font-weight: 700;
             }
 
             .field { margin-bottom: 11px; }
+
             .field label {
                 display: block;
                 margin-bottom: 5px;
@@ -323,102 +326,34 @@
                 opacity: .8;
             }
 
+            .field input, .field select, .field textarea {
+                display: block;
+                width: 100%;
+                padding: 9px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--control);
+                color: var(--text);
+                outline-color: var(--accent);
+            }
+
             .field textarea {
-                min-height: 90px;
+                min-height: 70px;
                 resize: vertical;
             }
 
-            .primary {
-                padding: 10px 13px;
-                border: 0;
-                border-radius: 9px;
-                background: var(--accent);
-                color: white;
-                font-weight: 700;
-                cursor: pointer;
-            }
-
-            .full { width: 100%; }
-
-            .scenario-box {
-                padding: 12px;
-                margin: 10px 0;
-                border: 1px solid var(--border);
-                border-radius: 10px;
-                background: var(--control);
-            }
-
-            .scenario-prompt {
-                font-size: 12px;
-                line-height: 1.6;
-            }
-
-            .sample {
-                margin-top: 10px;
-                padding: 10px;
-                border-left: 3px solid var(--accent);
-                background: var(--panel);
-                border-radius: 5px;
-                font-size: 12px;
-                line-height: 1.5;
-                overflow-wrap: anywhere;
-            }
-
-            .sample-label {
-                display: block;
-                margin-bottom: 5px;
-                font-size: 10px;
-                font-weight: 700;
-                opacity: .65;
-                text-transform: uppercase;
-            }
-
-            .note {
+            .form-actions {
                 display: flex;
-                align-items: flex-start;
                 gap: 8px;
-                margin-bottom: 8px;
-                padding: 10px;
-                border: 1px solid var(--border);
-                border-radius: 9px;
-                background: var(--control);
-                font-size: 12px;
-                line-height: 1.5;
-                white-space: pre-wrap;
-                overflow-wrap: anywhere;
             }
 
-            .note span { flex: 1; }
-            .note button {
-                border: 0;
-                background: transparent;
-                color: var(--text);
-                cursor: pointer;
-            }
-
-            .notice {
-                padding: 10px;
-                margin-bottom: 12px;
-                border: 1px solid var(--border);
-                border-radius: 9px;
-                font-size: 11px;
-                line-height: 1.5;
-                opacity: .8;
-            }
+            .form-actions button { flex: 1; }
 
             .empty {
-                padding: 20px 10px;
+                padding: 24px 12px;
                 text-align: center;
                 font-size: 12px;
                 opacity: .65;
-            }
-
-            .footer {
-                padding: 9px;
-                text-align: center;
-                font-size: 10px;
-                opacity: .6;
-                border-top: 1px solid var(--border);
             }
 
             @media (max-width: 480px) {
@@ -430,107 +365,84 @@
                 }
 
                 .launcher {
-                    left: 76px;
+                    left: 134px;
                     bottom: 14px;
                 }
             }
         </style>
 
-        <button class="launcher" title="ATC Phraseology Assistant"
-            aria-label="Open ATC Phraseology Assistant">🎧</button>
+        <button class="launcher" title="Keyboard Reference"
+            aria-label="Open Keyboard Reference">⌨</button>
 
-        <section class="panel" aria-label="ATC Phraseology Assistant">
+        <section class="panel" aria-label="GeoFS Keyboard Reference">
             <div class="header">
                 <div>
-                    <div class="heading">🎧 ATC Phraseology Assistant</div>
-                    <div class="subtitle">Reference · Practice · Personal notes</div>
+                    <div class="heading">⌨ GeoFS Keyboard Reference</div>
+                    <div class="subtitle">Search · Organize · Personalize</div>
                 </div>
                 <button class="close" aria-label="Close panel">✕</button>
             </div>
 
-            <div class="tabs">
-                <button class="tab active" data-view="reference">Reference</button>
-                <button class="tab" data-view="practice">Practice</button>
-                <button class="tab" data-view="notes">My Notes</button>
-            </div>
-
-            <div class="view active" data-panel="reference">
+            <div class="toolbar">
                 <input class="search" type="search"
-                    placeholder="Search phraseology..."
-                    aria-label="Search phraseology">
-                <div class="phrase-list"></div>
+                    placeholder="Search shortcuts and notes..."
+                    aria-label="Search shortcuts">
+                <button class="primary add">+ Add</button>
             </div>
 
-            <div class="view" data-panel="practice">
-                <div class="notice">
-                    Fictional simulator practice only. These examples are not
-                    real clearances, instructions, or a substitute for official
-                    aviation training and current publications.
+            <div class="filters"></div>
+            <div class="entry-list" aria-live="polite"></div>
+            <div class="count"></div>
+
+            <form class="editor">
+                <div class="editor-title">Add shortcut</div>
+
+                <div class="field">
+                    <label for="entry-title">Shortcut name *</label>
+                    <input id="entry-title" name="title" maxlength="80"
+                        required placeholder="Example: Toggle preferred view">
                 </div>
 
                 <div class="field">
-                    <label for="callsign">Practice callsign</label>
-                    <input id="callsign" maxlength="24" value="GEFS 01">
+                    <label for="entry-key">Key or key combination *</label>
+                    <input id="entry-key" name="shortcut" maxlength="80"
+                        required placeholder="Example: Ctrl + Shift + K">
                 </div>
 
                 <div class="field">
-                    <label for="station">Fictional station name</label>
-                    <input id="station" maxlength="40" value="Example Field">
-                </div>
-
-                <div class="field">
-                    <label for="role">Practice role</label>
-                    <select id="role">
-                        <option value="pilot">Pilot</option>
-                        <option value="controller">Controller</option>
+                    <label for="entry-category">Category</label>
+                    <select id="entry-category" name="category">
+                        <option>Aircraft</option>
+                        <option>Camera</option>
+                        <option>Interface</option>
+                        <option>General</option>
+                        <option>Custom</option>
                     </select>
                 </div>
 
                 <div class="field">
-                    <label for="scenario">Scenario</label>
-                    <select id="scenario">
-                        <option value="introduction">First contact</option>
-                        <option value="repetition">Requesting repetition</option>
-                        <option value="clarification">Clarification</option>
-                        <option value="readback">Practice readback</option>
-                        <option value="position">Simulated position report</option>
-                        <option value="feedback">Request feedback</option>
-                    </select>
+                    <label for="entry-notes">Personal notes</label>
+                    <textarea id="entry-notes" name="notes" maxlength="1500"
+                        placeholder="Add what this shortcut does or where you verified it..."></textarea>
                 </div>
 
-                <div class="scenario-box">
-                    <div class="section-title scenario-title">First contact</div>
-                    <div class="scenario-prompt"></div>
-                    <div class="sample">
-                        <span class="sample-label">Example response</span>
-                        <span class="sample-text"></span>
-                    </div>
+                <div class="form-actions">
+                    <button class="primary save" type="submit">Save entry</button>
+                    <button class="secondary cancel" type="button">Cancel</button>
                 </div>
-
-                <div class="field">
-                    <label for="response">Your practice response</label>
-                    <textarea id="response" maxlength="1000"
-                        placeholder="Write your own practice response here..."></textarea>
-                </div>
-
-                <button class="primary full save-response">Save practice note</button>
-            </div>
-
-            <div class="view" data-panel="notes">
-                <div class="section-title">My saved notes</div>
-                <div class="notice">Notes are stored locally in this browser.</div>
-                <div class="notes-list"></div>
-            </div>
+            </form>
 
             <div class="footer">
-                Geo-FS-Interface-Add-Ons-Plus · Educational simulator tool
+                Reference only · Does not change GeoFS controls
             </div>
         </section>
     `;
 
     const $ = selector => shadow.querySelector(selector);
-    const $$ = selector => [...shadow.querySelectorAll(selector)];
     const panel = $(".panel");
+    const list = $(".entry-list");
+    const editor = $(".editor");
+    const search = $(".search");
 
     function readTheme() {
         const defaults = {
@@ -554,6 +466,7 @@
 
     function applyTheme() {
         const theme = readTheme();
+
         const light = theme.theme === "light" ||
             (theme.theme === "system" &&
                 window.matchMedia("(prefers-color-scheme: light)").matches);
@@ -591,179 +504,225 @@
             Math.min(28, Math.max(0, Number(theme.roundness) || 14)) + "px");
     }
 
-    function substitute(text) {
-        const callsign = $("#callsign").value.trim() || "GEFS 01";
-        const station = $("#station").value.trim() || "Example Field";
-
-        return text
-            .replaceAll("[Calls sign]", callsign)
-            .replaceAll("[callsign]", callsign)
-            .replaceAll("[Station name]", station)
-            .replaceAll("[station name]", station);
+    function categories() {
+        return ["All", ...new Set(entries.map(entry => entry.category || "Custom"))];
     }
 
-    function renderPhrases() {
-        const query = $(".search").value.trim().toLowerCase();
-        const results = phrases.filter(item =>
-            [
-                item.category,
-                item.title,
-                item.phrase,
-                item.explanation
-            ].join(" ").toLowerCase().includes(query)
-        );
-
-        const container = $(".phrase-list");
+    function renderFilters() {
+        const container = $(".filters");
         container.replaceChildren();
 
-        if (!results.length) {
-            const empty = document.createElement("div");
-            empty.className = "empty";
-            empty.textContent = "No matching phrases found.";
-            container.appendChild(empty);
-            return;
-        }
+        categories().forEach(category => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "filter" +
+                (activeCategory === category ? " active" : "");
+            button.textContent = category;
 
-        results.forEach(item => {
-            const card = document.createElement("article");
-            card.className = "phrase-card";
+            button.addEventListener("click", () => {
+                activeCategory = category;
+                renderFilters();
+                renderEntries();
+            });
 
-            const category = document.createElement("div");
-            category.className = "phrase-category";
-            category.textContent = item.category;
-
-            const title = document.createElement("div");
-            title.className = "phrase-title";
-            title.textContent = item.title;
-
-            const phrase = document.createElement("div");
-            phrase.className = "phrase-text";
-            phrase.textContent = substitute(item.phrase);
-
-            const explanation = document.createElement("div");
-            explanation.className = "explanation";
-            explanation.textContent = item.explanation;
-
-            card.append(category, title, phrase, explanation);
-            container.appendChild(card);
+            container.appendChild(button);
         });
     }
 
-    function renderScenario() {
-        activeScenario = $("#scenario").value;
-        const scenario = scenarios[activeScenario];
-        const role = $("#role").value;
+    function renderEntries() {
+        const query = search.value.trim().toLowerCase();
 
-        $(".scenario-title").textContent = scenario.title;
-        $(".scenario-prompt").textContent = scenario.prompt;
-        $(".sample-text").textContent = substitute(
-            role === "pilot" ? scenario.pilot : scenario.controller
-        );
-    }
+        const filtered = entries.filter(entry => {
+            const matchesCategory = activeCategory === "All" ||
+                (entry.category || "Custom") === activeCategory;
 
-    function saveNotes() {
-        try {
-            localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
-            return true;
-        } catch (error) {
-            alert("Could not save your notes. Check browser storage.");
-            console.warn("[ATC Phraseology Assistant] Save failed:", error);
-            return false;
-        }
-    }
+            const searchable = [
+                entry.title,
+                entry.shortcut,
+                entry.category,
+                entry.notes
+            ].join(" ").toLowerCase();
 
-    function renderNotes() {
-        const container = $(".notes-list");
-        container.replaceChildren();
+            return matchesCategory && searchable.includes(query);
+        });
 
-        if (!notes.length) {
+        list.replaceChildren();
+
+        if (!filtered.length) {
             const empty = document.createElement("div");
             empty.className = "empty";
-            empty.textContent = "No saved notes yet. Complete a practice exercise to add one.";
-            container.appendChild(empty);
-            return;
+            empty.textContent = "No matching shortcuts. Try another search or add an entry.";
+            list.appendChild(empty);
         }
 
-        notes.forEach((note, index) => {
-            const row = document.createElement("div");
-            row.className = "note";
+        filtered.forEach(entry => {
+            const card = document.createElement("article");
+            card.className = "entry";
 
-            const text = document.createElement("span");
-            text.textContent = note;
+            const top = document.createElement("div");
+            top.className = "entry-top";
+
+            const information = document.createElement("div");
+
+            const title = document.createElement("div");
+            title.className = "entry-title";
+            title.textContent = entry.title;
+
+            const category = document.createElement("div");
+            category.className = "entry-category";
+            category.textContent = entry.category || "Custom";
+
+            const shortcut = document.createElement("div");
+            shortcut.className = "shortcut";
+            shortcut.textContent = entry.shortcut;
+
+            information.append(title, category, shortcut);
+
+            const actions = document.createElement("div");
+            actions.className = "entry-actions";
+
+            const edit = document.createElement("button");
+            edit.type = "button";
+            edit.textContent = "Edit";
+            edit.dataset.action = "edit";
+            edit.dataset.id = entry.id;
 
             const remove = document.createElement("button");
             remove.type = "button";
-            remove.textContent = "✕";
-            remove.title = "Delete note";
-            remove.setAttribute("aria-label", "Delete note");
+            remove.textContent = "Delete";
+            remove.dataset.action = "delete";
+            remove.dataset.id = entry.id;
 
-            remove.addEventListener("click", () => {
-                notes.splice(index, 1);
-                if (saveNotes()) renderNotes();
-            });
+            actions.append(edit, remove);
+            top.append(information, actions);
+            card.appendChild(top);
 
-            row.append(text, remove);
-            container.appendChild(row);
+            if (entry.notes) {
+                const notes = document.createElement("div");
+                notes.className = "entry-notes";
+                notes.textContent = entry.notes;
+                card.appendChild(notes);
+            }
+
+            list.appendChild(card);
         });
+
+        $(".count").textContent =
+            `${filtered.length} shown · ${entries.length} saved`;
+    }
+
+    function openEditor(entry = null) {
+        editingId = entry ? entry.id : null;
+        editor.reset();
+
+        $(".editor-title").textContent =
+            entry ? "Edit shortcut" : "Add shortcut";
+        $(".save").textContent = entry ? "Update entry" : "Save entry";
+
+        if (entry) {
+            editor.elements.title.value = entry.title || "";
+            editor.elements.shortcut.value = entry.shortcut || "";
+            editor.elements.category.value = entry.category || "Custom";
+            editor.elements.notes.value = entry.notes || "";
+        }
+
+        editor.classList.add("open");
+        editor.elements.title.focus();
+    }
+
+    function closeEditor() {
+        editor.classList.remove("open");
+        editor.reset();
+        editingId = null;
+    }
+
+    function createId() {
+        if (window.crypto && typeof window.crypto.randomUUID === "function") {
+            return window.crypto.randomUUID();
+        }
+
+        return "shortcut-" + Date.now() + "-" +
+            Math.random().toString(36).slice(2, 9);
     }
 
     $(".launcher").addEventListener("click", () => {
         applyTheme();
         panel.classList.toggle("open");
-        if (panel.classList.contains("open")) renderScenario();
+
+        if (panel.classList.contains("open")) search.focus();
     });
 
     $(".close").addEventListener("click", () => {
         panel.classList.remove("open");
     });
 
-    $$(".tab").forEach(tab => {
-        tab.addEventListener("click", () => {
-            $$(".tab").forEach(item => item.classList.remove("active"));
-            $$(".view").forEach(item => item.classList.remove("active"));
+    $(".add").addEventListener("click", () => openEditor());
+    $(".cancel").addEventListener("click", closeEditor);
+    search.addEventListener("input", renderEntries);
 
-            tab.classList.add("active");
-            $(`[data-panel="${tab.dataset.view}"]`).classList.add("active");
+    editor.addEventListener("submit", event => {
+        event.preventDefault();
 
-            if (tab.dataset.view === "notes") renderNotes();
-        });
-    });
+        const title = editor.elements.title.value.trim();
+        const shortcut = editor.elements.shortcut.value.trim();
 
-    $(".search").addEventListener("input", renderPhrases);
-    $("#role").addEventListener("change", renderScenario);
-    $("#scenario").addEventListener("change", renderScenario);
-    $("#callsign").addEventListener("input", renderScenario);
-    $("#station").addEventListener("input", renderScenario);
-
-    $(".save-response").addEventListener("click", () => {
-        const response = $("#response").value.trim();
-
-        if (!response) {
-            alert("Write a practice response before saving.");
-            $("#response").focus();
+        if (!title || !shortcut) {
+            alert("Enter both a shortcut name and its key combination.");
             return;
         }
 
-        const scenario = scenarios[activeScenario];
-        const role = $("#role").value;
-        const callsign = $("#callsign").value.trim() || "GEFS 01";
+        const entry = {
+            id: editingId || createId(),
+            title,
+            shortcut,
+            category: editor.elements.category.value,
+            notes: editor.elements.notes.value.trim()
+        };
 
-        const note = [
-            `Scenario: ${scenario.title}`,
-            `Role: ${role}`,
-            `Callsign: ${callsign}`,
-            `Response: ${response}`
-        ].join("\n");
+        if (editingId) {
+            const index = entries.findIndex(item => item.id === editingId);
+            if (index !== -1) entries[index] = entry;
+        } else {
+            entries.unshift(entry);
+        }
 
-        notes.unshift(note);
-
-        if (saveNotes()) {
-            $("#response").value = "";
-            alert("Practice note saved.");
+        if (saveEntries()) {
+            closeEditor();
+            activeCategory = "All";
+            renderFilters();
+            renderEntries();
         }
     });
 
-    // Drag panel by its header.
+    list.addEventListener("click", event => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+
+        const entry = entries.find(item => item.id === button.dataset.id);
+        if (!entry) return;
+
+        if (button.dataset.action === "edit") {
+            openEditor(entry);
+        }
+
+        if (button.dataset.action === "delete") {
+            if (!confirm(`Delete "${entry.title}"?`)) return;
+
+            entries = entries.filter(item => item.id !== entry.id);
+
+            if (saveEntries()) {
+                if (activeCategory !== "All" &&
+                    !entries.some(item => item.category === activeCategory)) {
+                    activeCategory = "All";
+                }
+
+                renderFilters();
+                renderEntries();
+            }
+        }
+    });
+
+    // Drag the panel by its header.
     const header = $(".header");
     let drag = null;
 
@@ -771,6 +730,7 @@
         if (event.target.closest("button")) return;
 
         const rect = panel.getBoundingClientRect();
+
         drag = {
             x: event.clientX,
             y: event.clientY,
@@ -810,10 +770,9 @@
         if (event.key === THEME_KEY) applyTheme();
     });
 
-    renderPhrases();
-    renderScenario();
-    renderNotes();
+    renderFilters();
+    renderEntries();
     applyTheme();
 
-    console.info("[GeoFS ATC Phraseology Assistant] Loaded.");
+    console.info("[GeoFS Keyboard Reference] Loaded.");
 })();
